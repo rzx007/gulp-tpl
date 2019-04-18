@@ -1,1 +1,1 @@
-"use strict";var person=function(){console.log(111)};
+"use strict";var person=function(){console.log("change")};

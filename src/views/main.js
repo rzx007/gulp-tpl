@@ -1,4 +1,4 @@
 var person = ()=>{
-    console.log(111);
+    console.log('change');
     
 }
