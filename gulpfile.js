@@ -3,10 +3,13 @@ var htmltpl = require('gulp-html-tpl'); // 引用html模板
 var artTemplate = require('art-template'); // 模板渲染
 var concat = require('gulp-concat');        // 合并文件
 var uglify = require('gulp-uglify');        // js 压缩
+var babel = require('gulp-babel');
 var csso = require('gulp-csso');            // css压缩
 var autoprefixer = require('gulp-autoprefixer');  //自动添加css兼容后缀
 var imagemin = require('gulp-imagemin');    // 图片压缩
 var clean = require('gulp-clean');          // 清空文件夹
+
+const babelenv = require('babel-preset-env');
 
 // html处理模板,这里还没有压缩
 gulp.task('html', function () {
@@ -33,8 +36,11 @@ gulp.task('js_libs', function () {
 
 // 压缩项目js
 gulp.task('js_main', function () {
-    return gulp.src('./src/js/*.js')
+    return gulp.src(['./src/js/*.js', './src/views/*.js'])
         // .pipe(concat('main.min.js'))    // 合并文件并命名
+        .pipe(babel({
+            presets: [babelenv]
+        }))
         .pipe(uglify())  // 压缩js
         .pipe(gulp.dest('./dist/js'));
 });
@@ -68,7 +74,7 @@ gulp.task('clean', function () {
 
 
 
-gulp.task('default', gulp.series('clean','html', 'js_libs', 'js_main', function (done) {
+gulp.task('default', gulp.series('clean', 'html', 'js_libs', 'js_main', function (done) {
     done()
     // default task code here
 }))

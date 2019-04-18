@@ -1,0 +1,1 @@
+"use strict";var person=function(){console.log(111)};
