@@ -1,0 +1,28 @@
+{
+  "name": "gulp-template",
+  "version": "1.0.0",
+  "description": "'前端传统开发自动化'",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "gulp"
+  ],
+  "author": "rzx",
+  "license": "ISC",
+  "devDependencies": {
+    "art-template": "^4.13.2",
+    "babel-core": "^6.26.3",
+    "babel-preset-env": "^1.7.0",
+    "gulp": "^4.0.0",
+    "gulp-autoprefixer": "^6.0.0",
+    "gulp-babel": "^8.0.0",
+    "gulp-clean": "^0.4.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-csso": "^3.0.1",
+    "gulp-html-tpl": "^0.5.2",
+    "gulp-imagemin": "^5.0.3",
+    "gulp-uglify": "^3.0.2"
+  }
+}
