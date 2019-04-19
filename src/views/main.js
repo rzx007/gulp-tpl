@@ -1,4 +1,4 @@
-var person = ()=>{
+const person = ()=>{
     console.log('change');
     
 }

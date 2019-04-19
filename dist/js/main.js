@@ -1,1 +1,5 @@
-"use strict";var person=function(){console.log("change")};
+"use strict";
+
+var person = function person() {
+  console.log('change');
+};
