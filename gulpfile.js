@@ -22,11 +22,11 @@ function build() {
 
 // 路径
 var packPath = {
-    html:['./src/*.html', './src/views/*.html'],
-    jsLibs:['./src/libs/**/*'],
-    jsMain:['./src/js/*.js', './src/views/*.js'],
-    cssMian:['./src/css/**/*.css'],
-    images:['./src/images/*.*']
+    html: ['./src/*.html', './src/views/*.html'],
+    jsLibs: ['./src/libs/**/*'],
+    jsMain: ['./src/js/*.js', './src/views/*.js'],
+    cssMian: ['./src/css/**/*.css'],
+    images: ['./src/images/*.*']
 
 
 }
@@ -112,7 +112,7 @@ gulp.task('development', function (cb) {
     cb()
 })
 function watchs() {
-    var watcher = gulp.watch(['./src/**/*.html'], gulp.series('html'));
+    var watcher = gulp.watch([].concat(packPath.html,packPath.jsMain, packPath.cssMian, packPath.jsLibs,packPath.images), gulp.series('clean', 'html', 'js_libs', 'js_main'));
     watcher.on('all', function (event, path, stats) {
         browserSync.reload()
         console.log('File ' + path + ' was ' + event + ', running tasks...');
