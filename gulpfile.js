@@ -27,8 +27,6 @@ var packPath = {
     jsMain: ['./src/js/*.js', './src/views/*.js'],
     cssMian: ['./src/css/**/*.css'],
     images: ['./src/images/*.*']
-
-
 }
 
 // html处理模板,这里还没有压缩
