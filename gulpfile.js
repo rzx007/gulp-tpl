@@ -13,6 +13,8 @@ var clean = require('gulp-clean');          // 清空文件夹
 var browserSync = require('browser-sync').create(); //本地服务
 var gulpif = require('gulp-if');            // 条件判断
 const babelenv = require('babel-preset-env');
+var postcss = require('gulp-postcss'); //移动端vw单位自动转换
+var pxtoviewport = require('postcss-px-to-viewport');
 
 // 区分生产开发环境
 process.env.NODE_ENV = 'development'
@@ -25,7 +27,7 @@ var packPath = {
     html: ['./src/*.html', './src/views/*.html'],
     jsLibs: ['./src/libs/**/*'],
     jsMain: ['./src/js/*.js', './src/views/*.js'],
-    cssMian: ['./src/css/**/*.css'],
+    cssMian: ['./src/css/**/*.css','./src/css/*.css'],
     images: ['./src/images/*.*']
 }
 
@@ -67,12 +69,19 @@ gulp.task('js_main', function () {
 });
 // 打包css
 gulp.task('css_main', function () {
+    var processors = [
+        pxtoviewport({
+            viewportWidth: 750,
+            viewportUnit: 'vw'
+        })
+    ];
     return gulp.src(packPath.cssMian)
         .pipe(autoprefixer({
             browsers: ['last 2 versions', 'Android >= 4.0'],
             cascade: true, //是否美化属性值 默认：true
             remove: true //是否去掉不必要的前缀 默认：true 
         }))
+        .pipe(postcss(processors))
         .pipe(concat('main.min.css'))
         .pipe(gulpif(build(), csso()))                   // 压缩优化css
         .pipe(gulp.dest('./dist/css'));
@@ -110,7 +119,7 @@ gulp.task('development', function (cb) {
     cb()
 })
 function watchs() {
-    var watcher = gulp.watch([].concat(packPath.html,packPath.jsMain, packPath.cssMian, packPath.jsLibs,packPath.images), gulp.series('clean', 'html', 'js_libs', 'js_main'));
+    var watcher = gulp.watch([].concat(packPath.html, packPath.jsMain, packPath.cssMian, packPath.jsLibs, packPath.images), gulp.series('clean', 'html', 'css_main','js_libs', 'js_main'));
     watcher.on('all', function (event, path, stats) {
         browserSync.reload()
         console.log('File ' + path + ' was ' + event + ', running tasks...');
@@ -120,7 +129,7 @@ watchs()
 
 
 
-gulp.task('build', gulp.series('production', 'clean', 'html', 'js_libs', 'js_main'))
+gulp.task('build', gulp.series('production', 'clean', 'html','css_main', 'js_libs', 'js_main'))
 
-gulp.task('dev', gulp.series('development', 'clean', 'html', 'js_libs', 'js_main', 'browser'))
+gulp.task('dev', gulp.series('development', 'clean', 'html', 'css_main','js_libs', 'js_main', 'browser'))
 

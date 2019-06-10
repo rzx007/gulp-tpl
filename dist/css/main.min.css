@@ -1,0 +1,11 @@
+body{
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgb(126, 173, 173);
+}
+
+h1{
+    font-size: 2.66667vw;
+}
