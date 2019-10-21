@@ -12,7 +12,7 @@ var cache = require('gulp-cache'); //缓存
 var clean = require('gulp-clean');          // 清空文件夹
 var browserSync = require('browser-sync').create(); //本地服务
 var gulpif = require('gulp-if');            // 条件判断
-const babelenv = require('babel-preset-env');
+// const babelenv = require('babel-preset-env');
 
 // 区分生产开发环境
 process.env.NODE_ENV = 'development'
