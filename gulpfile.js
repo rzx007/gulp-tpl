@@ -5,6 +5,8 @@ var concat = require('gulp-concat');        // 合并文件
 var htmlmin = require('gulp-htmlmin');      // html压缩
 var uglify = require('gulp-uglify');        // js 压缩
 var babel = require('gulp-babel');           //编译es6语法
+var browserify = require('gulp-browserify'); //借助browserify你可以使编译require, module.exports功能
+var stringify = require('stringify');          //require("./hello.html") 
 var csso = require('gulp-csso');            // css压缩
 var autoprefixer = require('gulp-autoprefixer');  //自动添加css兼容后缀
 var imagemin = require('gulp-imagemin');    // 图片压缩
@@ -25,8 +27,8 @@ var packPath = {
     html: ['./src/*.html', './src/views/*.html'],
     jsLibs: ['./src/libs/**/*'],
     jsMain: ['./src/js/*.js', './src/views/*.js'],
-    cssMian: ['./src/css/**/*.css'],
-    images: ['./src/images/*.*']
+    cssMian: ['./src/css/**/*.css', './src/css/*.css'],
+    images: ['./src/assets/*']
 }
 
 // html处理模板,这里还没有压缩
@@ -60,19 +62,21 @@ gulp.task('js_libs', function () {
 // 压缩项目js
 gulp.task('js_main', function () {
     return gulp.src(packPath.jsMain)
-        // .pipe(concat('main.min.js'))    // 合并文件并命名
         .pipe(babel())
+        .pipe(browserify({
+            debug: !build(),
+            transform: [
+                stringify(['.html']),
+            ],
+        }))
+        // .pipe(concat('main.min.js'))    // 合并文件并命名
         .pipe(gulpif(build(), uglify()))  // 压缩js
         .pipe(gulp.dest('./dist/js'));
 });
 // 打包css
 gulp.task('css_main', function () {
     return gulp.src(packPath.cssMian)
-        .pipe(autoprefixer({
-            browsers: ['last 2 versions', 'Android >= 4.0'],
-            cascade: true, //是否美化属性值 默认：true
-            remove: true //是否去掉不必要的前缀 默认：true 
-        }))
+        .pipe(autoprefixer())
         .pipe(concat('main.min.css'))
         .pipe(gulpif(build(), csso()))                   // 压缩优化css
         .pipe(gulp.dest('./dist/css'));
@@ -86,7 +90,7 @@ gulp.task('images', function () {
             interlaced: true, 	// 隔行扫描gif进行渲染，默认：false 
             multipass: true 		// 多次优化svg直到完全优化，默认：false 
         }))))
-        .pipe(gulp.dest('./dist/images'));
+        .pipe(gulp.dest('./dist/assets'));
 });
 // 清空dist文件夹
 gulp.task('clean', function () {
@@ -110,7 +114,7 @@ gulp.task('development', function (cb) {
     cb()
 })
 function watchs() {
-    var watcher = gulp.watch([].concat(packPath.html,packPath.jsMain, packPath.cssMian, packPath.jsLibs,packPath.images), gulp.series('clean', 'html', 'js_libs', 'js_main'));
+    var watcher = gulp.watch([].concat(packPath.html, packPath.jsMain, packPath.cssMian, packPath.jsLibs, packPath.images), gulp.series('clean', 'html', 'css_main', 'images', 'js_libs', 'js_main'));
     watcher.on('all', function (event, path, stats) {
         browserSync.reload()
         console.log('File ' + path + ' was ' + event + ', running tasks...');
@@ -120,7 +124,7 @@ watchs()
 
 
 
-gulp.task('build', gulp.series('production', 'clean', 'html', 'js_libs', 'js_main'))
+gulp.task('build', gulp.series('production', 'clean', 'html', 'css_main', 'images', 'js_libs', 'js_main'))
 
-gulp.task('dev', gulp.series('development', 'clean', 'html', 'js_libs', 'js_main', 'browser'))
+gulp.task('dev', gulp.series('development', 'clean', 'html', 'css_main', 'images', 'js_libs', 'js_main', 'browser'))
 
