@@ -24,9 +24,9 @@ function build() {
 
 // 路径
 var packPath = {
-    html: ['./src/*.html', './src/views/*.html'],
+    html: ['./src/*.html', './src/views/*.html','./src/views/**/*.html'],
     jsLibs: ['./src/libs/**/*'],
-    jsMain: ['./src/js/*.js', './src/views/*.js'],
+    jsMain: ['./src/js/*.js', './src/views/*.js','./src/views/**/*.js'],
     cssMian: ['./src/css/**/*.css', './src/css/*.css'],
     images: ['./src/assets/*']
 }
@@ -69,7 +69,7 @@ gulp.task('js_main', function () {
                 stringify(['.html']),
             ],
         }))
-        // .pipe(concat('main.min.js'))    // 合并文件并命名
+         .pipe(concat('main.min.js'))    // 合并文件并命名
         .pipe(gulpif(build(), uglify()))  // 压缩js
         .pipe(gulp.dest('./dist/js'));
 });
