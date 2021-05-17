@@ -120,7 +120,7 @@ function watchs() {
         console.log('File ' + path + ' was ' + event + ', running tasks...');
     });
 }
-watchs()
+if(!build()) watchs()
 
 
 
