@@ -1,0 +1,12 @@
+.border-radius {
+    height: 190px;
+    width: 190px;
+    border-radius: 49px;
+    background: linear-gradient(145deg, #dbdfe5, #ffffff);
+    box-shadow: 20px 20px 52px #a3a6aa,
+        -20px -20px 52px #ffffff;
+}
+#dplayer{
+    height: 400px;
+    width: 700px;
+}
